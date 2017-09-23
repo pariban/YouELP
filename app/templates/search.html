@@ -1,0 +1,11 @@
+<html>
+  <head>
+	  <title> {{ title }} </title>
+  </head>
+  <body>
+    <h1>Hi, {{ user }}!</h1>
+    {% for res in results %}
+    <div><p>{{ res.title }} says: <b>{{ res.body }}</b></p></div>
+    {% endfor %}
+  </body>
+</html>
