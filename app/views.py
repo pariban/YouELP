@@ -34,7 +34,7 @@ def search():
                                user="Parika", # FIXME
                                form=form)
     else:
-        render_template("search.html",
+        return render_template("search.html",
                         title="Search Results",
                         user="Parika", # FIXME
                         form = form,
