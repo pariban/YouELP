@@ -1,5 +1,4 @@
-from kafka.client import KafkaClient
-from kafka.producer import SimpleProducer,KeyedProducer
+from kafka import KafkaClient, SimpleProducer, KeyedProducer
 import logging,sys
 
 class KafkaLoggingHandler(logging.Handler):
