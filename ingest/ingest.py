@@ -8,50 +8,32 @@ Created on Sun Sep 17 18:27:30 2017
 # This script reads from s3 and posts parallaly to Elasticsearch
 import json
 from elasticsearch import Elasticsearch
-from pyspark import SparkConf, SparkContext
+from pyspark import SparkConf, SparkContext, SQLContext
+from pyspark.sql.functions import colect_list
 
+es = Elasticsearch(http_auth=('elastic','changeme'))
 
-def postToElasticSearch(index_name, primary_key, record):
+def postToElasticSearch(index_name, primary_key, doc):
     """
     Posts record to Elastic search using the provided elastic search client
     """
-    doc = json.loads(record)
+    global es
     pk = doc.get("primary_key")
-    es = getESClient()
     res = es.index(index=index_name, doc_type='yelp', id=pk, body=doc)
    # print(res['created'])
 
 
-def getESClient():
-    """Creates and returns an elastic search client"""
-    es = Elasticsearch(http_auth=('elastic','changeme'))
-    return es
-
-
-def populateESWithJsonFile(sc, index_name, index_attrib):
-    file_name = index_attrib["file_name"]
-    primary_key = index_attrib["primary_key"]
-    """reads s3 file and populates elastic search"""
-    rdd = sc.textFile(file_name)
-    rdd.map(lambda x : postToElasticSearch(index_name, primary_key, x)).collect()
-    
-
 def main(sc):
     # reads from s3 and posts to elastic search
     s3_root = "s3n://yelp-raw-data/"
-    index_info = {
-            "business": {
-                    "file_name": s3_root + "business.json",
-                    "primary_key": "busniness_id",
-                    },
-            "user": {
-                    "file_name": s3_root + "user.json",
-                    "primary_key": "user_id"
-                    },
-            }
-    for index_name, index_attrib in index_info.items():
-        populateESWithJsonFile(sc, index_name, index_attrib)
 
+    sqlContext = SQLContext(sc)
+    business_df = sqlContext.read.json(s3_root + 'business.json')
+    review_df = sqlContext.read.json(s3_root + 'review.json')
+
+    grouped_reviews = review_df.groupBy('business_id').agg(collect_list("reviews").alias("reviews"))
+    joined_df = business_df.join(grouped_reviews, 'left_outer')
+    joined_df.foreach(lambda x: postToElasticSearch('business_review_joined', 'business_id', x)).collect()
 
 if __name__ == "__main__":
         # Configure OPTIONS
