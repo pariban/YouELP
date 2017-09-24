@@ -3,8 +3,7 @@ from flask import render_template
 from app import app
 from logic import logic
 from .forms import SearchForm
-from .model.searchreq import SearchRequest
-from .model.searchresp import SearchResponse
+from .model import searchreq
 from flask import request
 
 @app.route('/')
@@ -41,5 +40,5 @@ def search():
                                title="Search Results",
                                user=user,
                                form = form,
-                               results=logic.handle_search(SearchRequest(user, form.query_string.data))
+                               results=logic.handle_search(searchreq.SearchRequest(user, form.query_string.data))
                                )
