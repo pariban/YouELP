@@ -45,3 +45,14 @@ def search():
                                    'business_review_joined',
                                    form.query_string.data))
                                )
+
+@app.route('/details/<id>', methods=['GET'])
+def details(id):
+    user = "Parika" # FIXME
+    return render_template("details.html",
+                               title="Details",
+                               user=user,
+                               doc={
+                                   "name": "test"
+                                   }
+                               )

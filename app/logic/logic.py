@@ -12,7 +12,7 @@ def handle_search(query):
     :return: SearchResponse
     """
     try:
-        matches = es_client.search("business_name", query["query_string"])
+        matches = es_client.search(query.index, query.query_string)
         return SearchResponse(None, matches)
     except Exception as e:
         traceback.print_exc()

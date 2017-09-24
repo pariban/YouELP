@@ -11,13 +11,16 @@
 		  </p>
 		  <p><input type="submit" value="Search"></p>
 	  </form>
-	  <h1>Hi, {{ user }}!</h1>
 	  {% if results %}
 	  {% if results.error is not none %}
 	  Unexpected Error
 	  {% else %}
 	  {% for res in results.results %}
-	  <div><p>res._source</p></div>
+	  <div>
+		  <p><a href="{{url_for('details', id=res._source.business_id)}}"><b> {{ res._source.name }}</b></a></p>
+		  <p>Rating:{{ res._source.stars}} Reviews:{{ res._source.review_count}} </p>
+		  <p>{{ res._source.address }} {{ res._source.city}}</p>
+	  </div>
 	  {% endfor %}
 	  {% endif %}
 	  {% endif %}
