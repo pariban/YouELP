@@ -9,7 +9,7 @@ Created on Sun Sep 17 18:27:30 2017
 import json
 from elasticsearch import Elasticsearch
 from pyspark import SparkConf, SparkContext, SQLContext
-from pyspark.sql.functions import collect_list
+from pyspark.sql.functions import collect_list, struct
 
 es = Elasticsearch(http_auth=('elastic','changeme'))
 
@@ -30,8 +30,8 @@ def main(sc):
     sqlContext = SQLContext(sc)
     business_df = sqlContext.read.json(s3_root + 'business.json')
     review_df = sqlContext.read.json(s3_root + 'review.json')
-
-    grouped_reviews = review_df.groupBy('business_id').agg(collect_list("reviews").alias("reviews"))
+    grouped_reviews = review_df.groupBy('business_id').agg(collect_list(struct(
+        "date", "review_id", "stars", "text", "useful", "user_id").alias("reviews")))
     joined_df = business_df.join(grouped_reviews, 'left_outer')
     joined_df.foreach(lambda x: postToElasticSearch('business_review_joined', 'business_id', x)).collect()
 
