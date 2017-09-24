@@ -3,6 +3,8 @@ from flask import render_template
 from app import app
 from logic import logic
 from .forms import SearchForm
+from .model.searchreq import SearchRequest
+from .model.searchresp import SearchResponse
 from flask import request
 
 @app.route('/')
@@ -27,19 +29,17 @@ def index():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    user = "Parika" # FIXME
     form = SearchForm()
     if request.method == 'GET':
         return render_template("search.html",
                                title="Search",
-                               user="Parika", # FIXME
+                               user=user,
                                form=form)
     else:
         return render_template("search.html",
-                        title="Search Results",
-                        user="Parika", # FIXME
-                        form = form,
-                        results=logic.handle_search({
-                            "user": "Parika",
-                            "query_string": form.query_string.data,
-                        })
-                )
+                               title="Search Results",
+                               user=user,
+                               form = form,
+                               results=logic.handle_search(SearchRequest(user, form.query_string.data))
+                               )

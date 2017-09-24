@@ -1,15 +1,17 @@
+from app.model.searchresp import SearchResponse
 from ..clients.elastic import Elastic
 
 es_client = Elastic()
 
 def handle_search(query):
+    """
+    Handles a query
+    :param query: SearchQuery
+    :return: SearchResponse
+    """
     try:
-	# format:
-	# { user: Name, query_string: Query }
-        return {
-                "error": None,
-                "results": es_client.search("business_name", query["query_string"])
-                }
+        matches = es_client.search("business_name", query["query_string"])
+        return SearchResponse(None, matches)
     except Exception as e:
-        return { "error": str(e), "results": [] }
+        return SearchResponse(str(e), None)
 
