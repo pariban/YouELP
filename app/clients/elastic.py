@@ -9,4 +9,4 @@ class Elastic:
         res = self.client.index(index=index_name, doc_type='yelp', id=key, body=doc)
 
     def search(self, index_name, query):
-        return self.client.search(index_name=index_name, q=query)
+        return self.client.search(index=index_name, q=query)
