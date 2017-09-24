@@ -1,7 +1,7 @@
 
 from flask import render_template
 from app import app
-from logic import logic
+from .logic import logic
 from .forms import SearchForm
 from .model import searchreq
 from flask import request
@@ -40,5 +40,8 @@ def search():
                                title="Search Results",
                                user=user,
                                form = form,
-                               results=logic.handle_search(searchreq.SearchRequest(user, 'business_review_joined' form.query_string.data))
+                               results=logic.handle_search(searchreq.SearchRequest(
+                                   user,
+                                   'business_review_joined',
+                                   form.query_string.data))
                                )

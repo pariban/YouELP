@@ -13,7 +13,7 @@
 	  </form>
 	  <h1>Hi, {{ user }}!</h1>
 	  {% if results %}
-	  {% if results.error %}
+	  {% if results.error is not none %}
 	  Unexpected Error
 	  {% else %}
 	  {% for res in results.results %}
