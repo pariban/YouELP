@@ -11,16 +11,16 @@ from elasticsearch import Elasticsearch
 from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import collect_list, struct
 
-es = Elasticsearch(http_auth=('elastic','changeme'))
 
-def postToElasticSearch(index_name, primary_key, doc):
+def postToElasticSearch(index_name, primary_key, rec):
     """
     Posts record to Elastic search using the provided elastic search client
     """
-    global es
+    doc = json.loads(rec.encode('utf8'))
     pk = doc.get("primary_key")
+    es = Elasticsearch(http_auth=('elastic','changeme'))
     res = es.index(index=index_name, doc_type='yelp', id=pk, body=doc)
-   # print(res['created'])
+    print(res['created'])
 
 
 def main(sc):
@@ -28,12 +28,13 @@ def main(sc):
     s3_root = "s3n://yelp-raw-data/"
 
     sqlContext = SQLContext(sc)
-    business_df = sqlContext.read.json(s3_root + 'business.json')
     review_df = sqlContext.read.json(s3_root + 'review.json')
     grouped_reviews = review_df.groupBy('business_id').agg(collect_list(struct(
         "date", "review_id", "stars", "text", "useful", "user_id").alias("reviews")))
-    joined_df = business_df.join(grouped_reviews, 'left_outer')
-    joined_df.foreach(lambda x: postToElasticSearch('business_review_joined', 'business_id', x)).collect()
+
+    business_df = sqlContext.read.json(s3_root + 'business.json')
+    joined_df = business_df.join(grouped_reviews, 'business_id', 'left_outer')
+    joined_df.toJSON().foreach(lambda x: postToElasticSearch('business_review_joined', 'business_id', x)).collect()
 
 if __name__ == "__main__":
         # Configure OPTIONS
