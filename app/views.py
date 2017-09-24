@@ -40,5 +40,5 @@ def search():
                                title="Search Results",
                                user=user,
                                form = form,
-                               results=logic.handle_search(searchreq.SearchRequest(user, form.query_string.data))
+                               results=logic.handle_search(searchreq.SearchRequest(user, 'business_review_joined' form.query_string.data))
                                )
