@@ -9,7 +9,7 @@ Created on Sun Sep 17 18:27:30 2017
 import json
 from elasticsearch import Elasticsearch
 from pyspark import SparkConf, SparkContext, SQLContext
-from pyspark.sql.functions import colect_list
+from pyspark.sql.functions import collect_list
 
 es = Elasticsearch(http_auth=('elastic','changeme'))
 
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     conf = SparkConf().setAppName("yelp-ingest")
     sc   = SparkContext(conf=conf)
     sc._jsc.hadoopConfiguration().set("fs.s3n.awsAccessKeyId", str(aws_cfg["awsAccessKeyId"]))
-    sc._jsc.hadoopConfiguration().set("fs.s3n.awsSecretAccessKey", str(aws_fp["awsSecretAccessKey"]))
+    sc._jsc.hadoopConfiguration().set("fs.s3n.awsSecretAccessKey", str(aws_cfg["awsSecretAccessKey"]))
     main(sc)

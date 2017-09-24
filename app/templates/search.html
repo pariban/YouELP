@@ -12,12 +12,14 @@
 		  <p><input type="submit" value="Search"></p>
 	  </form>
 	  <h1>Hi, {{ user }}!</h1>
+	  {% if results %}
 	  {% if results.error %}
 	  Unexpected Error
 	  {% else %}
 	  {% for res in results.results %}
 	  <div><p>res</p></div>
 	  {% endfor %}
+	  {% endif %}
 	  {% endif %}
   </body>
 </html>
