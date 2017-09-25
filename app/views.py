@@ -50,9 +50,12 @@ def search():
 def details(id):
     user = "Parika" # FIXME
     return render_template("details.html",
-                               title="Details",
-                               user=user,
-                               doc={
-                                   "name": "test"
-                                   }
-                               )
+                           title="Details",
+                           user=user,
+                           doc=logic.handle_details(
+                               searchreq.SearchRequest(
+                                   user,
+                                   'business_review_joined',
+                                   ''
+                               ), id
+                           ))

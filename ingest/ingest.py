@@ -27,7 +27,7 @@ def postToElasticSearch(index_name, primary_key, rec):
     :return: None
     """
     doc = json.loads(rec.encode('utf8'))
-    pk = doc.get("primary_key")
+    pk = doc.get(primary_key)
     es = Elasticsearch(http_auth=('elastic','changeme'))
     res = es.index(index=index_name, doc_type='yelp', id=pk, body=doc)
     print(res['created'])
@@ -35,7 +35,11 @@ def postToElasticSearch(index_name, primary_key, rec):
 
 def main(sc):
     """
-    reads from s3 and posts to elastic search
+    Reads from s3 and posts to elastic search
+
+    It does an outer join of business.json with
+    review.json (grouped by 'business_id') on 'business_id'
+    and adds an additional column 'reviews'.
     :param sc: spark context
     :return: None
     """
@@ -56,7 +60,7 @@ def main(sc):
         .collect()
 
 if __name__ == "__main__":
-        # Configure OPTIONS
+    """Reads aws secrets and sets up spark context"""
     with open('configs/aws.json') as aws_fp:
         aws_cfg = json.load(aws_fp)
     conf = SparkConf().setAppName("yelp-ingest")
