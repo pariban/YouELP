@@ -2,8 +2,14 @@
 
 ## Personalized Yelp with zero-query recommendations
 
-### Ingestion
+### Preparing search dataset
 
 [ingestion-flow]: https://github.com/pariban/YouELP/raw/master/images/ingest.png "Ingestion Flow"
 
-![Data Ingestion][ingestion-flow]
+![Ingesting search dataset][ingestion-flow]
+
+### Analyzing category correlations
+
+[analysis-flow]: https://github.com/pariban/YouELP/raw/master/images/analysis.png "Analysis Flow"
+
+![Analyzing dataset][analysis-flow]
