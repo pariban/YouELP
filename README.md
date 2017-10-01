@@ -13,3 +13,8 @@
 [analysis-flow]: https://github.com/pariban/YouELP/raw/master/images/analysis.png "Analysis Flow"
 
 ![Analyzing dataset][analysis-flow]
+
+### Category Correlation
+[category-corrlation]: https://github.com/pariban/YouELP/raw/master/images/analysis.png "Category Correlation"
+
+![Category Correlations][category-correlation]
