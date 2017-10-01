@@ -1,10 +1,12 @@
 
 from flask import render_template
 from app import app
-from .logic import logic
+from .logic import logic, recommend
 from .forms import SearchForm
 from .model import searchreq
 from flask import request
+
+recommender = recommend.Recommender()
 
 @app.route('/deprecated_index')
 def deprecated_index():
@@ -29,6 +31,7 @@ def deprecated_index():
 def search():
     user = "Parika" # FIXME
     form = SearchForm()
+    global recommender
     if request.method == 'GET':
         return render_template("index.html",
                                title="Home",
@@ -39,10 +42,18 @@ def search():
                                title="Search Results",
                                user=user,
                                form = form,
-                               results=logic.handle_search(searchreq.SearchRequest(
-                                   user,
-                                   'business_review_joined',
-                                   form.query_string.data))
+                               results=logic.handle_search(
+                                   searchreq.SearchRequest(
+                                       user,
+                                       'business_review_joined',
+                                       form.query_string.data)
+                               ),
+                               recommendations=recommender.get_recommendations(
+                                   searchreq.SearchRequest(
+                                       user,
+                                       'business_review_joined',
+                                       form.query_string.data)
+                               )
                                )
 
 @app.route('/details/<id>', methods=['GET'])
