@@ -15,6 +15,6 @@
 ![Analyzing dataset][analysis-flow]
 
 ### Category Correlation
-[category-correlation]: https://github.com/pariban/YouELP/raw/master/images/analysis.png "Category Correlation"
+[category-correlation]: https://github.com/pariban/YouELP/raw/master/images/correlation.png "Category Correlation"
 
 ![Category Correlations][category-correlation]
