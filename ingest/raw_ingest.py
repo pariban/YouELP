@@ -7,6 +7,8 @@ Created on Sun Sep 17 18:27:30 2017
 
 # This script reads from s3 and posts parallaly to Elasticsearch
 import json
+
+import sys
 from elasticsearch import Elasticsearch
 from pyspark import SparkConf, SparkContext
 
@@ -54,7 +56,9 @@ def main(sc):
 
 
 if __name__ == "__main__":
-        # Configure OPTIONS
+    raise Exception("Deprecated: please use ingest.py")
+
+    # Configure OPTIONS
     with open('configs/aws.json') as aws_fp:
         aws_cfg = json.load(aws_fp)
     conf = SparkConf().setAppName("yelp-ingest")

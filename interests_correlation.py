@@ -33,7 +33,9 @@ def emit_user_category_tuple(entry):
     results = []
     if 'categories' in entry and 'reviews' in entry:
         for cat in filter(None, entry['categories']):
+            # skips empty strings
             for rev in filter(None, entry['reviews']):
+                # skips None
                 if 'user_id' in rev:
                     results.append((rev['user_id'], cat))
     return results
@@ -49,9 +51,10 @@ def emit_category_markov_distribution(categories):
     for key1 in counter.keys():
         for key2 in counter.keys():
             results.append(((key1, key2),
-                            counter[key2] * 1.0 * counter[key1] /
+                            counter[key2] * 1.0 /
                             sum_of_vals /
-                            sum_of_vals))
+                            counter[key1]
+                            ))
     return results
 
 

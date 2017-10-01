@@ -47,17 +47,23 @@ def main(sc):
 
     sqlContext = SQLContext(sc)
     review_df = sqlContext.read.json(s3_root + 'review.json')
-    grouped_reviews = review_df\
-        .groupBy('business_id')\
-        .agg(collect_list(
-        struct("date", "review_id", "stars", "text", "useful", "user_id").alias("reviews")))
+    grouped_reviews = review_df.groupBy(
+        'business_id'
+    ).agg(
+        collect_list(
+            struct(
+                "date", "review_id", "stars", "text", "useful", "user_id"
+            )
+        ).alias(
+            "reviews"
+        )
+    )
     business_df = sqlContext.read.json(s3_root + 'business.json')
     joined_df = business_df.join(grouped_reviews, 'business_id', 'left_outer')
-    joined_df\
-        .toJSON()\
-        .foreach(
-        lambda x: postToElasticSearch('business_review_joined', 'business_id', x))\
-        .collect()
+    joined_df.toJSON(
+    ).foreach(
+        lambda x: postToElasticSearch('business_review_joined', 'business_id', x)
+    ).collect()
 
 if __name__ == "__main__":
     """Reads aws secrets and sets up spark context"""

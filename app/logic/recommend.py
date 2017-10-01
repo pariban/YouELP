@@ -11,9 +11,9 @@ class Recommender():
                 self.correlation_map[row[0].lower()] = row[1].lower()
 
     def get_recommendations(self, query):
-        print >>sys.stderr, "getting recommendations for", query
+        # print >>sys.stderr, "getting recommendations for", query
         tgt_category = self._get(query.query_string)
-        print >>sys.stderr, "tgt:", tgt_category
+        # print >>sys.stderr, "tgt:", tgt_category
         if tgt_category:
             query.query_string = tgt_category
             return handle_search(query)
