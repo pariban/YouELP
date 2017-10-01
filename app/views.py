@@ -6,8 +6,7 @@ from .forms import SearchForm
 from .model import searchreq
 from flask import request
 
-@app.route('/')
-@app.route('/index')
+@app.route('/deprecated_index')
 def index():
     user = {'nickname': 'Miguel'}  # fake user
     posts = [  # fake array of posts
@@ -26,6 +25,8 @@ def index():
             posts=posts)
 
 
+@app.route('/')
+@app.route('/index')
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     user = "Parika" # FIXME

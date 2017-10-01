@@ -1,5 +1,5 @@
+pyspark==2.2.0
 elasticsearch==5.4.0
 Flask==0.12.2
 flask_wtf==0.14.2
-pyspark==2.2.0
 WTForms==2.1
