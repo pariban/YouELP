@@ -6,3 +6,4 @@
 
 [ingestion-flow]: https://github.com/pariban/YouELP/raw/master/images/ingest.png "Ingestion Flow"
 
+![Data Ingestion][ingestion-flow]
