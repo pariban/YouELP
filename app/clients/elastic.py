@@ -10,3 +10,6 @@ class Elastic:
 
     def search(self, index_name, query):
         return self.client.search(index=index_name, q=query)
+
+    def get(self, index_name, doc_id):
+        return self.client.get(index=index_name, doc_type='yelp', id=doc_id)

@@ -25,9 +25,9 @@ def handle_details(query, doc_id):
     :return:
     """
     try:
-        matches = es_client.get(index=query.index, id=doc_id)
+        res = es_client.get(query.index, doc_id)
         return {
-            "details": matches['_source'],
+            "details": res['_source'],
             "error": None
         }
     except Exception as e:

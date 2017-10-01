@@ -1,9 +1,18 @@
 <html>
   <head>
-	  <title> {{ doc.name }} </title>
+	  <title> Details </title>
   </head>
   <body>
+	  {% if doc %}
+	  {% if doc.error is not none %}
+	  Unexpected error: {{doc.error}}
+	  {% else %}
+	  <h1>{{doc.details.name}}</h1>
+	  {% endif %}
+	  {% else%}
+	  Unexpected error: Null document!
+	  {% endif %}
   <h1> {{ doc.name}} </h1>
-
+  {{ doc }}
   </body>
 </html>

@@ -7,7 +7,7 @@ from .model import searchreq
 from flask import request
 
 @app.route('/deprecated_index')
-def index():
+def deprecated_index():
     user = {'nickname': 'Miguel'}  # fake user
     posts = [  # fake array of posts
             {
@@ -24,20 +24,18 @@ def index():
             user=user,
             posts=posts)
 
-
-@app.route('/')
-@app.route('/index')
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def search():
     user = "Parika" # FIXME
     form = SearchForm()
     if request.method == 'GET':
-        return render_template("search.html",
-                               title="Search",
+        return render_template("index.html",
+                               title="Home",
                                user=user,
                                form=form)
     else:
-        return render_template("search.html",
+        return render_template("index.html",
                                title="Search Results",
                                user=user,
                                form = form,
