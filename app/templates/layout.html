@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+	<head>
+		{% block head %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" >
+		<title>{% block title %}{% endblock %}</title>
+		{% endblock %}
+	</head>
+	<body>
+		<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				<form class="form-inline mt-2 mt-md-0" method="post" name="search">
+					{{ form.hidden_tag() }}
+					{{ form.query_string(size=80) }}
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
+		<div class="row">
+			<div id="content">
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+			<div class="container">
+				<span class="text-muted"> {% block footer %} &copy; Copyright 2017 by Parika Bandyopadhyay. {% endblock %}</span>
+			</div>
+		</nav>
+	</body>
+</html>

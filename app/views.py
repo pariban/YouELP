@@ -1,3 +1,4 @@
+import os
 
 from flask import render_template
 from app import app
@@ -6,7 +7,10 @@ from .forms import SearchForm
 from .model import searchreq
 from flask import request
 
-recommender = recommend.Recommender()
+def root_dir():
+    return os.path.abspath(os.path.dirname(__file__))
+
+recommender = recommend.Recommender(os.path.join(root_dir(), 'resources/correlation.tsv'))
 
 @app.route('/deprecated_index')
 def deprecated_index():
@@ -38,6 +42,7 @@ def search():
                                user=user,
                                form=form)
     else:
+        query_string = form.query_string.data
         return render_template("index.html",
                                title="Search Results",
                                user=user,
@@ -46,22 +51,24 @@ def search():
                                    searchreq.SearchRequest(
                                        user,
                                        'business_review_joined',
-                                       form.query_string.data)
+                                       query_string)
                                ),
                                recommendations=recommender.get_recommendations(
                                    searchreq.SearchRequest(
                                        user,
                                        'business_review_joined',
-                                       form.query_string.data)
+                                       query_string)
                                )
                                )
 
 @app.route('/details/<id>', methods=['GET'])
 def details(id):
     user = "Parika" # FIXME
+    form = SearchForm()
     return render_template("details.html",
                            title="Details",
                            user=user,
+                           form = form,
                            doc=logic.handle_details(
                                searchreq.SearchRequest(
                                    user,

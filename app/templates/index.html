@@ -1,28 +1,34 @@
-<html>
-  <head>
-	  <title> {{ title }} </title>
-  </head>
-  <body>
-	  <form action="" method="post" name="search">
-		  {{ form.hidden_tag() }}
-		  <p>
-			  Please enter your query:<br>
-			  {{ form.query_string(size=80) }}<br>
-		  </p>
-		  <p><input type="submit" value="Search"></p>
-	  </form>
+{% extends "layout.html" %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+	<div class="col-sm-6 col-md-offset-1">
 	  {% if results %}
 	  {% if results.error is not none %}
 	  Unexpected Error
 	  {% else %}
+	  <h1> Search Results </h1>
 	  {% for res in results.results %}
 	  <div>
 		  <p><a href="{{url_for('details', id=res._source.business_id)}}"><b> {{ res._source.name }}</b></a></p>
 		  <p>Rating:{{ res._source.stars}} Reviews:{{ res._source.review_count}} </p>
 		  <p>{{ res._source.address }} {{ res._source.city}}</p>
+		  <p>Categories: {{ res._source.categories|join(', ') }} </p>
 	  </div>
 	  {% endfor %}
 	  {% endif %}
 	  {% endif %}
-  </body>
-</html>
+	</div>
+	<div class="col-sm-3">
+		{% if recommendations %}
+		<h3>You may also like</h3>
+		{% for res in recommendations.results %}
+		  <p><a href="{{url_for('details', id=res._source.business_id)}}"><b> {{ res._source.name }}</b></a></p>
+		  <p>Rating:{{ res._source.stars}} Reviews:{{ res._source.review_count}} </p>
+		  <p>{{ res._source.address }} {{ res._source.city}}</p>
+		  <p>Categories: {{ res._source.categories|join(', ') }} </p>
+		{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}
