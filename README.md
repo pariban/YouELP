@@ -1,4 +1,4 @@
-# YouELP 
+# YouELP
 _Personalized Yelp with zero-query recommendations_
 
 The vision of this project is to build an end-to-end search and recommendation system for POI data, just like
@@ -34,7 +34,7 @@ the Flask dev server by running ```server.py```.
 
 ### Preparing Datasets
 
-The system relies on two datasets: 
+The system relies on two datasets:
 1. Search data
 2. Category-correlation data
 
@@ -46,7 +46,7 @@ containing both business info and reviews, and indexed in elasticsearch.
 [ingestion-flow]: https://github.com/pariban/YouELP/raw/master/images/ingest.png "Ingestion Flow"
 ![Ingesting search dataset][ingestion-flow]
 
-### Category-correlations data
+#### Category-correlations data
 
 We extract the category correlations using a Markov model of users reviewing category _C2_ given that they also reviewed
 category _C1_. We extract this information using the following pipeline.
